@@ -1,32 +1,33 @@
 # Copyright (c) 2022 Mr. Green's Workshop https://www.MrGreensWorkshop.com
 # SPDX-License-Identifier: Apache-2.0
 
-set(PICO_SDK_PATH "/Users/wasdwasd0105/pico/pico-sdk")
+# Set the board to Raspberry Pi Pico W
+# Set top source code folder
 
+set(PICO_SDK_FETCH_FROM_GIT on)
+set(PICO_EXTRAS_FETCH_FROM_GIT on)
+
+set(PICO_BOARD pico_w)
+set(SOURCE_FOLDER "src")
 
 # Set minimum CMake version
 cmake_minimum_required(VERSION 3.17)
 
-# Include the subsidiary .cmake file to get the SDK
-include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+# pico_sdk_import.cmake is a single file copied from this SDK
+# note: this must happen before project()
+include(pico_sdk_import.cmake)
+
+# We also need PICO EXTRAS
+include(pico_extras_import.cmake)
 
 # Set the name and version of the project
-project(PicoW_USB_BT_Audio VERSION 1.0.0)
-
-# Set the board to Raspberry Pi Pico W
-set(PICO_BOARD pico_w)
-
-# Set top source code folder
-set(SOURCE_FOLDER "src")
+project(PicoW_USB_BT_Audio C CXX ASM)
 
 # Set build type (options: 'Debug', 'Release', 'MinSizeRel', 'RelWithDebInfo')
 set(default_build_type "Release")
 
 # Set CMAKE_BUILD_TYPE
 set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build, options are: 'Debug', 'Release', 'MinSizeRel', 'RelWithDebInfo'." FORCE)
-
-# We also need PICO EXTRAS
-include(pico_extras_import.cmake)
 
 # Initialize the SDK
 pico_sdk_init()
@@ -61,8 +62,6 @@ message(STATUS "C and C++ source files: \n${APP_SRC_STR}")
 target_sources(${PROJECT_NAME} PRIVATE ${app_src})
 
 set(BTSTACK_3RD_PARTY_PATH ${PICO_SDK_PATH}/lib/btstack/3rd-party)
-#set(BTSTACK_EXAMPLE_PATH $ENV{PICO_SDK_PATH}/lib/btstack/3rd-party)
-
 
 
 target_compile_definitions(PicoW_USB_BT_Audio PRIVATE
